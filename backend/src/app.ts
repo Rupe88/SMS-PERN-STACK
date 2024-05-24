@@ -1,7 +1,8 @@
 import express from "express";
 import { Request, Response } from "express";
-import connectionDB from "./db/connection";
 import dotenv from "dotenv";
+import userRoutes from "./routes/userRoutes";
+import { AppDataSource } from "./data-source";
 dotenv.config();
 
 const app = express();
@@ -18,9 +19,18 @@ app.get("/", async (req: Request, res: Response) => {
   });
 });
 
-//listening
+//apis
+app.use("/api/user", userRoutes);
 
-app.listen(port, async() => {
-  await connectionDB();
-  console.log(`server is running on http://localhost:${port}`);
-});
+AppDataSource.initialize()
+  .then(() => {
+    console.log("database connected successfully");
+
+    //listening
+    app.listen(port, async () => {
+      console.log(`server is running on http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.log("error in db conneciton", error);
+  });

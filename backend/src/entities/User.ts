@@ -13,6 +13,9 @@ export class User {
   username: string;
 
   @Column()
+  email:string;
+
+  @Column()
   password: string;
 
   @Column({
@@ -21,6 +24,7 @@ export class User {
     default: 'student', // Default role is student
   })
   role: string;
+  lowercase:true;
 
   @OneToMany(() => Admin, admin => admin.user)
   admins: Admin[];
