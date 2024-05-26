@@ -13,7 +13,8 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { username, email, password, role } = req.body;
+      const { username, email, password, role} = req.body;
+    const avatar=req.file;
 
       //validate email
       if(!emailRegex.test(email)){
@@ -43,12 +44,15 @@ export const registerUser = catchAsync(
         email,
         password: hashedPassword,
         role,
+        avatar:`src/storage/${avatar?.filename}`
       });
       await userRepository.save(newUser);
 
       res.status(200).json({
         success: true,
         message: "new user created successfully",
+        newUser
+      
       });
     } catch (error) {
       next(new ErrorHandler(500, "Error in user register api"));

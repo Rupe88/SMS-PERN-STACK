@@ -1,0 +1,8 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore .env file at the root level
+.env
+
+# Ignore storage directory inside src folder
+/src/storage/

@@ -18,6 +18,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true }) // Allow null to indicate no avatar uploaded
+  avatar: string;
+
   @Column({
     type: 'enum',
     enum: ['admin', 'teacher', 'student'],
