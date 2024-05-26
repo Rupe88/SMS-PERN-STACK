@@ -9,7 +9,7 @@ dotenv.config();
 import JWT from "jsonwebtoken";
 const secretOrPrivateKey: string = process.env.JWT_SECRET || 'defaultSecretKey';
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+//register user
 export const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -60,6 +60,7 @@ export const registerUser = catchAsync(
   }
 );
 
+//login user
 export const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -99,3 +100,23 @@ if(!emailRegex.test(email)){
     }
   }
 );
+
+
+//get all the user
+
+export const getAllUsers=catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
+ try {
+  const userRepository=await AppDataSource.getRepository(User);
+  const users=userRepository.find();
+
+  res.status(200).json({
+    success:true,
+    message:"get all the user successfully",
+    users
+  })
+  
+ } catch (error) {
+  next(new ErrorHandler(500, "internal server error"))
+  
+ }
+})
