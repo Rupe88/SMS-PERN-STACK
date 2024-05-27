@@ -33,7 +33,7 @@ export const authMiddleware = catchAsync(
       next();
     } catch (err) {
       console.error("Error verifying token:", err);
-      return next(new ErrorHandler(500, "Internal server error"));
+      return next(new ErrorHandler(500, "JWT expired please login again"));
     }
   }
 );
