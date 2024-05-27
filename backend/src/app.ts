@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
 import { AppDataSource } from "./data-source";
-import path = require("path");
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -22,7 +22,7 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 //apis
-app.use("/api/user", userRoutes);
+app.use("/api/auth", userRoutes);
 
 AppDataSource.initialize()
   .then(() => {
