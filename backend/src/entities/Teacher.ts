@@ -1,27 +1,24 @@
 // Teacher.ts
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, OneToOne, OneToMany } from 'typeorm';
 import { User } from './User';
-import { Assignment } from './Assignment';
-import { Exam } from './Exam';
+import { Course } from './Course';
 import { Class } from './Class';
+import { Exam } from './Exam';
 
 @Entity()
 export class Teacher {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  email: string;
-
-  @ManyToOne(() => User, user => user.teachers)
+  @OneToOne(() => User, user => user.teacher)
   user: User;
 
-  @OneToMany(() => Assignment, assignment => assignment.teacher)
-  assignments: Assignment[];
+  @OneToMany(() => Course, course => course.teacher)
+  courses: Course[];
+
+  @OneToMany(() => Class, _class => _class.teacher)
+  classes: Class[];
 
   @OneToMany(() => Exam, exam => exam.teacher)
   exams: Exam[];
-
-  @OneToMany(() => Class, cls => cls.teacher)
-  classes: Class[];
 }

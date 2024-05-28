@@ -1,8 +1,8 @@
 // Exam.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Course } from './Course';
+import { Student } from './Student';
 import { Teacher } from './Teacher';
-import { Class } from './Class';
-import { Submission } from './Submission';
 
 @Entity()
 export class Exam {
@@ -15,15 +15,16 @@ export class Exam {
   @Column()
   date: Date;
 
+  @Column()
+  maxMarks: number;
+
+  @ManyToOne(() => Course, course => course.exams)
+  course: Course;
+
+  @ManyToMany(() => Student, student => student.exams)
+  @JoinTable()
+  students: Student[];
+
   @ManyToOne(() => Teacher, teacher => teacher.exams)
   teacher: Teacher;
-
-  @ManyToOne(() => Class, cls => cls.exams)
-  class: Class;
-
-  @Column({ nullable: true })
-  maxScore: number; // Maximum score for the exam
-
-  @OneToMany(() => Submission, submission => submission.exam)
-  submissions: Submission[];
 }

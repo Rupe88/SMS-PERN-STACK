@@ -1,6 +1,7 @@
-// src/entities/Library.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+// Library.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Admin } from './Admin';
+import { Book } from './Book';
 
 @Entity()
 export class Library {
@@ -8,22 +9,14 @@ export class Library {
   id: number;
 
   @Column()
-  title: string;
+  name: string;
 
   @Column()
-  author: string;
-
-  @Column()
-  isbn: string;
-
-  @Column({ type: 'date' })
-  publicationDate: Date;
-
-  @Column()
-  numberOfCopies: number;
+  location: string;
 
   @ManyToOne(() => Admin, admin => admin.libraries)
   admin: Admin;
 
-  // Add other library-specific fields as needed
+  @OneToMany(() => Book, book => book.library)
+  books: Book[];
 }

@@ -1,9 +1,8 @@
 // Class.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { Teacher } from './Teacher';
-import { Assignment } from './Assignment';
-import { Exam } from './Exam';
-import { Attendance } from './Attendance';
+import { Student } from './Student';
+import { Course } from './Course';
 
 @Entity()
 export class Class {
@@ -11,17 +10,16 @@ export class Class {
   id: number;
 
   @Column()
-  className: string;
+  name: string;
 
   @ManyToOne(() => Teacher, teacher => teacher.classes)
   teacher: Teacher;
 
-  @OneToMany(() => Assignment, assignment => assignment.class)
-  assignments: Assignment[];
+  @ManyToMany(() => Student, student => student.classes)
+  @JoinTable()
+  students: Student[];
 
-  @OneToMany(() => Exam, exam => exam.class)
-  exams: Exam[];
-
-  @OneToMany(() => Attendance, attendance => attendance.class)
-  attendances: Attendance[];
+  @ManyToMany(() => Course, course => course.classes)
+  @JoinTable()
+  courses: Course[];
 }

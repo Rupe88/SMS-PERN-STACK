@@ -1,10 +1,11 @@
 // User.ts
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import { Admin } from "./Admin";
 import { Teacher } from "./Teacher";
 import { Student } from "./Student";
 import { Transform } from "class-transformer";
 import { IsEmail, MinLength } from "class-validator";
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -22,23 +23,26 @@ export class User {
   @MinLength(6)
   password: string;
 
-  @Column({ nullable: true }) // Allow null to indicate no avatar uploaded
+  @Column({ nullable: true })
   avatar: string;
 
   @Column({
     type: "enum",
     enum: ["admin", "teacher", "student"],
-    default: "student", // Default role is student
+    default: "student",
   })
   @Transform(({ value }) => value.trim().toLowerCase())
   role: string;
 
-  @OneToMany(() => Admin, (admin) => admin.user)
-  admins: Admin[];
+  @OneToOne(() => Admin, admin => admin.user, { nullable: true })
+  @JoinColumn()
+  admin: Admin;
 
-  @OneToMany(() => Teacher, (teacher) => teacher.user)
-  teachers: Teacher[];
+  @OneToOne(() => Teacher, teacher => teacher.user, { nullable: true })
+  @JoinColumn()
+  teacher: Teacher;
 
-  @OneToMany(() => Student, (student) => student.user)
-  students: Student[];
+  @OneToOne(() => Student, student => student.user, { nullable: true })
+  @JoinColumn()
+  student: Student;
 }

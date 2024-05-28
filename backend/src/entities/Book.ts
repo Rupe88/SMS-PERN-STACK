@@ -1,9 +1,9 @@
-// Announcement.ts
+// Book.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Admin } from './Admin';
+import { Library } from './Library';
 
 @Entity()
-export class Announcement {
+export class Book {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -11,8 +11,8 @@ export class Announcement {
   title: string;
 
   @Column()
-  content: string;
+  author: string;
 
-  @ManyToOne(() => Admin, admin => admin.announcements)
-  admin: Admin;
+  @ManyToOne(() => Library, library => library.books)
+  library: Library;
 }

@@ -1,7 +1,7 @@
 // Assignment.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Teacher } from './Teacher';
-import { Class } from './Class';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Course } from './Course';
+import { Student } from './Student';
 
 @Entity()
 export class Assignment {
@@ -14,9 +14,13 @@ export class Assignment {
   @Column()
   description: string;
 
-  @ManyToOne(() => Teacher, teacher => teacher.assignments)
-  teacher: Teacher;
+  @Column()
+  dueDate: Date;
 
-  @ManyToOne(() => Class, cls => cls.assignments)
-  class: Class;
+  @ManyToOne(() => Course, course => course.assignments)
+  course: Course;
+
+  @ManyToMany(() => Student, student => student.assignments)
+  @JoinTable()
+  students: Student[];
 }

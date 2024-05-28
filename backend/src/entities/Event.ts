@@ -8,19 +8,11 @@ export class Event {
   id: number;
 
   @Column()
-  title: string;
+  name: string;
 
   @Column()
-  description: string;
-
-  @Column({ type: 'timestamp' })
-  startTime: Date;
-
-  @Column({ type: 'timestamp' })
-  endTime: Date;
+  date: Date;
 
   @ManyToOne(() => Admin, admin => admin.events)
   admin: Admin;
-
-  // Add other event-specific fields as needed
 }
